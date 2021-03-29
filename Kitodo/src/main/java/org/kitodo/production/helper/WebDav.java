@@ -240,15 +240,19 @@ public class WebDav implements Serializable {
      */
     private void saveTiffHeader(Process inProcess) {
         try {
-            URI imagesDirectory = fileService.getImagesDirectory(inProcess);
-            String path = ConfigCore.getKitodoDataDirectory() + imagesDirectory;
-            URI tiffWriterURI = Paths.get(new File(path).getAbsolutePath(), "tiffwriter.conf").toUri();
-            if (new File(tiffWriterURI).exists()) {
+            String imagesDirectory = fileService.getImagesDirectory(inProcess).getPath();
+            String kitodoDataDirectory = ConfigCore.getKitodoDataDirectory();
+            File kitodoImagesDirectory = Paths.get(kitodoDataDirectory, imagesDirectory).toFile();
+            if (! kitodoImagesDirectory.exists()) {
+                fileService.createDirectory(new File(kitodoDataDirectory).toURI(), imagesDirectory);
+            }
+            File tiffWriterFile = Paths.get(kitodoImagesDirectory.getAbsolutePath(), "tiffwriter.conf").toFile();
+            if (tiffWriterFile.exists()) {
                 return;
             }
             TiffHeader tif = new TiffHeader(inProcess);
             try (BufferedWriter outfile = new BufferedWriter(
-                    new OutputStreamWriter(fileService.write(tiffWriterURI), StandardCharsets.UTF_8))) {
+                    new OutputStreamWriter(fileService.write(tiffWriterFile.toURI()), StandardCharsets.UTF_8))) {
                 outfile.write(tif.getTiffAlles());
             }
         } catch (IOException | RuntimeException e) {
