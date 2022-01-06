@@ -366,5 +366,14 @@
         }
       }
     }
+  },
+  "settings": {
+    "index": {
+      "mapping": {
+        "nested_objects": {
+          "limit": 30000
+        }
+      }
+    }
   }
 }
