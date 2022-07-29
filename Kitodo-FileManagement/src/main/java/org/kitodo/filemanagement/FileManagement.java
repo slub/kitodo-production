@@ -133,16 +133,43 @@ public class FileManagement implements FileManagementInterface {
         uri = fileMapper.mapUriToKitodoDataDirectoryUri(uri);
         File file = new File(uri);
         if (file.exists()) {
-            if (file.isFile()) {
-                return Files.deleteIfExists(file.toPath());
+            logger.trace("Deleting file: " + file.getAbsolutePath());
+            String command = KitodoConfig.getParameter("script_delete", "");
+            if (command.isEmpty()) {
+                return deleteByApplication(file);
+            } else {
+                return deleteByScript(file, command);
             }
-            if (file.isDirectory()) {
-                FileUtils.deleteDirectory(file);
-                return true;
-            }
-            return false;
         }
         return true;
+    }
+
+    private boolean deleteByScript(File file, String command) throws FileNotFoundException {
+        File deleteScript = new File(command);
+        if (!deleteScript.exists()) {
+            throw new FileNotFoundException("Delete script " + command + " not found!");
+        }
+
+        CommandService commandService = new CommandService();
+        List<String> parameters = new ArrayList<>();
+        try {
+            parameters.add(URLDecoder.decode(file.getAbsolutePath(), StandardCharsets.UTF_8));
+            return commandService.runCommand(deleteScript, parameters).isSuccessful();
+        } catch (IOException e) {
+            logger.error("IOException in deleteByScript", e);
+            return false;
+        }
+    }
+
+    private boolean deleteByApplication(File file) throws IOException {
+        if (file.isFile()) {
+            return Files.deleteIfExists(file.toPath());
+        }
+        if (file.isDirectory()) {
+            FileUtils.deleteDirectory(file);
+            return true;
+        }
+        return false;
     }
 
     @Override
