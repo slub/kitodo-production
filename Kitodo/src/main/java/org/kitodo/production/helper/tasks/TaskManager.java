@@ -71,7 +71,7 @@ public class TaskManager {
      * @param task
      *            task to add
      */
-    public static void addTask(EmptyTask task) {
+    public static synchronized void addTask(EmptyTask task) {
         singleton().taskList.addLast(task);
     }
 
@@ -89,7 +89,7 @@ public class TaskManager {
      * @param task
      *            task to add
      */
-    static void addTaskIfMissing(EmptyTask task) {
+    static synchronized void addTaskIfMissing(EmptyTask task) {
         LinkedList<EmptyTask> tasks = singleton().taskList;
         if (!tasks.contains(task)) {
             int pos = lastIndexOf(TaskState.WORKING) + 1;
@@ -112,7 +112,7 @@ public class TaskManager {
      *
      * @return a copy of the task list
      */
-    public static List<EmptyTask> getTaskList() {
+    public static synchronized List<EmptyTask> getTaskList() {
         return new ArrayList<>(singleton().taskList);
     }
 
@@ -124,7 +124,7 @@ public class TaskManager {
      *            state of tasks to look for
      * @return the index of the last task in that state
      */
-    private static int lastIndexOf(TaskState state) {
+    private static synchronized int lastIndexOf(TaskState state) {
         int lastIndex = -1;
         int pos = -1;
         for (EmptyTask task : singleton().taskList) {
@@ -140,7 +140,7 @@ public class TaskManager {
      * Can be called to remove all
      * terminated threads from the list.
      */
-    public static void removeAllFinishedTasks() {
+    public static synchronized void removeAllFinishedTasks() {
         boolean redo;
         do {
             redo = false;
@@ -159,7 +159,7 @@ public class TaskManager {
      * @param task
      *            task to move forwards
      */
-    public static void runEarlier(EmptyTask task) {
+    public static synchronized void runEarlier(EmptyTask task) {
         TaskManager theManager = singleton();
         int index = theManager.taskList.indexOf(task);
         if (index > 0) {
@@ -174,7 +174,7 @@ public class TaskManager {
      * @param task
      *            task to move backwards
      */
-    public static void runLater(EmptyTask task) {
+    public static synchronized void runLater(EmptyTask task) {
         TaskManager theManager = singleton();
         int index = theManager.taskList.indexOf(task);
         if (index > -1 && index + 1 < theManager.taskList.size()) {
@@ -200,7 +200,7 @@ public class TaskManager {
      * exit the task manager as well as its managed threads during container
      * shutdown.
      */
-    static void shutdownNow() {
+    static synchronized void shutdownNow() {
         stopAndDeleteAllTasks();
         singleton().taskSitter.shutdownNow();
     }
@@ -210,7 +210,7 @@ public class TaskManager {
      * interrupt and immediate deletion for all threads that are alive and at
      * the same time remove all threads that aren’t alive anyhow.
      */
-    public static void stopAndDeleteAllTasks() {
+    public static synchronized void stopAndDeleteAllTasks() {
         boolean redo;
         do {
             redo = false;
