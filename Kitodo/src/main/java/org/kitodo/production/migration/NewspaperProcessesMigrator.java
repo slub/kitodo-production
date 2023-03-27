@@ -428,6 +428,11 @@ public class NewspaperProcessesMigrator {
             logger.debug("\"{}\" is not a year number. Falling back to {}.", year, FIELD_TITLE);
             year = MetadataEditor.getMetadataValue(yearFileYearLogicalDivision, FIELD_TITLE);
         }
+        // WORKAROUND SLUB: TitleDocMain ad TitleDocMainShort did not contain the year value but the ORDERLABEL attribut
+        if (Objects.isNull(year) || !year.matches(YEAR_OR_DOUBLE_YEAR)) {
+            logger.debug("\"{}\" is not a year number. Falling back to {}.", year, "ORDERLABEL");
+            year = yearFileYearLogicalDivision.getOrderlabel();
+        }
         LogicalDivision processYearLogicalDivision = years.computeIfAbsent(year, theYear -> {
             // remove existing layers in the year
             yearFileYearLogicalDivision.getChildren().get(0).getChildren().get(0).getChildren().clear();
