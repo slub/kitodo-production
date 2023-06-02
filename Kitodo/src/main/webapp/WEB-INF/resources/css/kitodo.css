@@ -3037,7 +3037,10 @@ Column content
 }
 
 #imagePreviewForm\:thumbnailWrapper .thumbnail-parent {
-    display: inline-block;
+    display: block;
+    margin-bottom: var(--group-margin);
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #thumbnailStripeScrollableContent a {
