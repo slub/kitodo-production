@@ -94,6 +94,7 @@ import org.kitodo.data.elasticsearch.index.IndexRestClient;
 import org.kitodo.data.exceptions.DataException;
 import org.kitodo.exceptions.WorkflowException;
 import org.kitodo.production.enums.ObjectType;
+import org.kitodo.production.enums.ProcessState;
 import org.kitodo.production.helper.Helper;
 import org.kitodo.production.process.ProcessGenerator;
 import org.kitodo.production.security.password.SecurityPasswordEncoder;
@@ -615,7 +616,7 @@ public class MockDatabase {
         Project projectTwo = ServiceManager.getProjectService().getById(2);
         Process thirdProcess = new Process();
         thirdProcess.setTitle("DBConnectionTest");
-        thirdProcess.setSortHelperStatus("100000000");
+        thirdProcess.setSortHelperStatus(ProcessState.COMPLETED.getValue());
         thirdProcess.setProject(projectTwo);
         ServiceManager.getProcessService().save(thirdProcess);
     }

@@ -136,6 +136,7 @@ import org.kitodo.production.dto.ProjectDTO;
 import org.kitodo.production.dto.PropertyDTO;
 import org.kitodo.production.dto.TaskDTO;
 import org.kitodo.production.enums.ObjectType;
+import org.kitodo.production.enums.ProcessState;
 import org.kitodo.production.helper.Helper;
 import org.kitodo.production.helper.SearchResultGeneration;
 import org.kitodo.production.helper.WebDav;
@@ -870,8 +871,10 @@ public class ProcessService extends ProjectSearchService<Process, ProcessDTO, Pr
      */
     public QueryBuilder getQueryForClosedProcesses() {
         BoolQueryBuilder query = new BoolQueryBuilder();
-        query.should(createSimpleQuery(ProcessTypeField.SORT_HELPER_STATUS.getKey(), "100000000", true));
-        query.should(createSimpleQuery(ProcessTypeField.SORT_HELPER_STATUS.getKey(), "100000000000", true));
+        query.should(createSimpleQuery(
+            ProcessTypeField.SORT_HELPER_STATUS.getKey(), ProcessState.COMPLETED20.getValue(), true));
+        query.should(createSimpleQuery(
+            ProcessTypeField.SORT_HELPER_STATUS.getKey(), ProcessState.COMPLETED.getValue(), true));
         return query;
     }
 
