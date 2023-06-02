@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -944,14 +945,14 @@ public class ImportService {
                 HashMap<String, String> parentIDMetadata = new HashMap<>();
                 parentIDMetadata.put(identifierMetadata, parentId);
                 try {
-                    for (ProcessDTO processDTO : ServiceManager.getProcessService().findByMetadata(parentIDMetadata, true)) {
+                    for (ProcessDTO processDTO : sortProcessesByProjectID(ServiceManager.getProcessService()
+                            .findByMetadataInAllProjects(parentIDMetadata, true), projectId)) {
                         Process process = ServiceManager.getProcessService().getById(processDTO.getId());
                         if (Objects.isNull(process.getRuleset()) || Objects.isNull(process.getRuleset().getId())) {
                             throw new ProcessGenerationException("Ruleset or ruleset ID of potential parent process "
                                     + process.getId() + " is null!");
                         }
-                        if (process.getProject().getId() == projectId
-                                && process.getRuleset().getId().equals(ruleset.getId())) {
+                        if (process.getRuleset().getId().equals(ruleset.getId())) {
                             parentProcess = process;
                             break;
                         }
@@ -962,6 +963,25 @@ public class ImportService {
             }
         }
         return parentProcess;
+    }
+
+    /**
+     * Sorts a list of process DTOs based on a provided projectId.
+     * Processes which match the provided projectId should come first.
+     * @param processDTOs list of process DTOs
+     * @param projectId projectId by which the list gets sorted
+     */
+    public List<ProcessDTO> sortProcessesByProjectID(List<ProcessDTO> processDTOs, int projectId) {
+        List<ProcessDTO> sortedList = new ArrayList<>(processDTOs);
+        Comparator<ProcessDTO> comparator = Comparator.comparingInt(obj -> {
+            if (obj.getProject().getId() == projectId) {
+                return 0; // Matching value should come first
+            } else {
+                return 1; // Non-matching value comes later
+            }
+        });
+        Collections.sort(sortedList, comparator);
+        return sortedList;
     }
 
     /**
