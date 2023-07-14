@@ -32,7 +32,18 @@ public class NewspaperProcessesMigratorTest {
                 "DresNa_516710338",
                 "LeipMofT_1679165712",
                 "StaaHofM_1031939121",
-                "Zeit_425552225"
+                "Zeit_425552225",
+                "AdorWo_1838560793",
+                "ErzgGe_1843119854",
+                "HoheTa_1841109282",
+                "HoheTa_184110793X",
+                "RabeAn_178001192X",
+                "WilsTa_1782027106",
+                "WochfWiT_1782021922",
+                "WochfWiu_1782024719",
+                "WochunAnf_1841066850",
+                "ZschTa_1780081065",
+                "ZschTaunA_1780077211"
         );
 
         NewspaperProcessesMigrator migrator = new NewspaperProcessesMigrator(testBatch);
