@@ -135,8 +135,9 @@
                     <f:param name="id" value="#{item.id}"/>
                     <i class="fa fa-pencil-square-o fa-lg"/>
                 </h:link>
-<!--
+
                 <h:panelGroup styleClass="action"
+                              rendered="false"
                               title="#{empty UserForm.getTasksInProgress(item) ? msgs.userWithoutTasks : msgs.unassignTasks}">
                     <p:commandLink id="unassignTasks"
                                    action="#{UserForm.resetTasksToOpen(item)}"
@@ -148,12 +149,11 @@
                         <p:confirm message=" #{msgs.confirmUnassignTasks}" header="#{msgs.confirmRelease}"/>
                     </p:commandLink>
                 </h:panelGroup>
--->
-<!--
+
                 <p:commandLink id="deleteUser"
                                action="#{UserForm.checkAndDelete}"
                                styleClass="action"
-                               rendered="#{SecurityAccessController.hasAuthorityToDeleteUser()}"
+                               rendered="false"
                                update="usersTabView:usersTable">
                     <h:outputText><i class="fa fa-trash-o"/></h:outputText>
                     <f:setPropertyActionListener value="#{item.id}" target="#{UserForm.userById}"/>
@@ -161,7 +161,6 @@
                                message="#{UserForm.formatString('confirmDeleteUser', item.fullName)}"
                                icon="ui-icon-alert"/>
                 </p:commandLink>
--->
             </h:form>
         </p:column>
     </p:dataTable>
