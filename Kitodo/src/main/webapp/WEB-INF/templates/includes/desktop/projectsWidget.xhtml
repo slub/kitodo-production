@@ -19,6 +19,7 @@
     <p:dataTable id="projectTable"
                  value="#{DesktopForm.projects}"
                  scrollable="true"
+                 sortBy="#{project.title}"
                  styleClass="default-layout"
                  var="project">
         <p:column headerText="#{msgs.title}">
@@ -64,7 +65,7 @@
                     <h:outputText><i class="fa fa-clipboard fa-lg"/></h:outputText>
                 </h:link>
                 <h:link styleClass="action"
-                        rendered="#{SecurityAccessController.hasAuthorityToViewDatabaseStatistics()}">
+                        rendered="false">
                     <h:outputText><i class="fa fa-bar-chart fa-lg"/></h:outputText>
                 </h:link>
                 <h:panelGroup styleClass="action"
