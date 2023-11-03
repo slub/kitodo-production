@@ -148,11 +148,11 @@ public class VariableReplacer {
     public String replace(String stringWithVariables) {
         return replaceWithFilename(stringWithVariables,null);
     }
-    
+
     /**
      * Replace variables withing a string. Like an ant, run through the variables
      * and fetch them from the digital document. Filename variables are replaced using the filename parameter.
-     * 
+     *
      * @param stringWithVariables
      *             string with placeholders
      * @param filename
@@ -359,7 +359,7 @@ public class VariableReplacer {
         String generatorSource = replace(String.valueOf(process.getProject().getGeneratorSource().getPath()));
         String replacedString = variableFinder.group(1);
         if (match.equals("generatorsource")) {
-            replacedString += generatorSource;    
+            replacedString += generatorSource;
         }
         else if (match.equals("generatorsourcepath")) {
             replacedString += KitodoConfig.getKitodoDataDirectory() + process.getId() + "/" + generatorSource;
@@ -392,8 +392,17 @@ public class VariableReplacer {
 
         switch (metadataLevel) {
             case ALL:
-                String allFirstchildValue = determinateReplacementForAll(variableFinder, dollarSignIfToKeep);
-
+                List<LogicalDivision> allChildren = workpiece.getLogicalStructure().getChildren();
+                String allFirstchildValue = null;
+                if (!allChildren.isEmpty()) {
+                    allFirstchildValue = MetadataEditor.getMetadataValue(allChildren.get(0), variableFinder.group(5));
+                    if (Objects.isNull(allFirstchildValue)) {
+                        List<LogicalDivision> firstChildChildren = allChildren.get(0).getChildren();
+                        if (!firstChildChildren.isEmpty()) {
+                            allFirstchildValue = MetadataEditor.getMetadataValue(firstChildChildren.get(0), variableFinder.group(5));
+                        }
+                    }
+                }
                 if (Objects.nonNull(allFirstchildValue)) {
                     return allFirstchildValue;
                 }
@@ -454,7 +463,7 @@ public class VariableReplacer {
 
     /**
     * Checks whether a string contains file variables.
-     * 
+     *
      * @param stringWithVariables
      *             string to be checked for file variables
      * @return true if string contains file variables
