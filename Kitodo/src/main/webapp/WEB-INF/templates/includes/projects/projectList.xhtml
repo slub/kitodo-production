@@ -133,6 +133,7 @@
                 </h:commandLink>
 
                 <h:panelGroup styleClass="action"
+                              rendered="false"
                               title="#{item.isActive() and item.templates.size() gt 0 ? msgs['massImport'] : msgs['noTemplatesConfigured']}">
                     <p:commandLink id="massImport"
                                    action="#{SelectTemplateDialogView.openMassImportForProject()}"

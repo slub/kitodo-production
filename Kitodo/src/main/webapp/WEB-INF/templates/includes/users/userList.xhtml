@@ -137,6 +137,7 @@
                 </h:link>
 
                 <h:panelGroup styleClass="action"
+                              rendered="false"
                               title="#{empty UserForm.getTasksInProgress(item) ? msgs.userWithoutTasks : msgs.unassignTasks}">
                     <p:commandLink id="unassignTasks"
                                    action="#{UserForm.resetTasksToOpen(item)}"
@@ -152,8 +153,8 @@
                 <p:commandLink id="deleteUser"
                                action="#{UserForm.checkAndDelete}"
                                styleClass="action"
-                               rendered="#{SecurityAccessController.hasAuthorityToDeleteUser()}"
-                               update="usersTabView:usersTable">
+                               rendered="false"
+                               update="usersTabView:usersTable"> <!-- was rendered="#{SecurityAccessController.hasAuthorityToDeleteUser()}" -->
                     <h:outputText><i class="fa fa-trash-o"/></h:outputText>
                     <f:setPropertyActionListener value="#{item.id}" target="#{UserForm.userById}"/>
                     <p:confirm header="#{msgs.confirmDelete}"

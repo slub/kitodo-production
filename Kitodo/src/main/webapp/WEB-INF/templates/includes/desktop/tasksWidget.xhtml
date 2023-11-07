@@ -20,16 +20,17 @@
                  value="#{DesktopForm.tasks}"
                  styleClass="default-layout"
                  scrollable="true"
+                 sortBy="#{task.process.title}"
                  var="task">
-        <p:column headerText="#{msgs.title}"
-                  id="taskTitle">
-            <h:outputText title="#{task.title}"
-                          value="#{task.title}"/>
-        </p:column>
         <p:column headerText="#{msgs.process}"
                   id="taskProcess">
             <h:outputText title="#{task.process.title}"
                           value="#{task.process.title}"/>
+        </p:column>
+        <p:column headerText="#{msgs.title}"
+                  id="taskTitle">
+            <h:outputText title="#{task.title}"
+                          value="#{task.title}"/>
         </p:column>
         <p:column headerText="#{msgs.project}"
                   id="taskProject">
@@ -52,7 +53,7 @@
                                action="#{ProcessForm.downloadToHome(task.process.id)}"
                                styleClass="action"
                                title="#{msgs.linkHomeDirectory}"
-                               rendered="#{SecurityAccessController.hasAuthorityToEditProcessImages()}">
+                               rendered="false"> <!-- was rendered="#{SecurityAccessController.hasAuthorityToEditProcessImages()} -->
                     <h:outputText><i class="fa fa-download"/></h:outputText>
                     <!-- TODO: add separate message in case it already exists and alert -->
                 </p:commandLink>
