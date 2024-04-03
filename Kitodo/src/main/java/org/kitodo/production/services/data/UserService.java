@@ -94,7 +94,7 @@ public class UserService extends ClientSearchDatabaseService<User, UserDAO> impl
 
     @Override
     public Long countDatabaseRows() throws DAOException {
-        return countDatabaseRows("SELECT COUNT(*) FROM User WHERE deleted = 0");
+        return countDatabaseRows("SELECT COUNT(*) FROM User WHERE deleted = false");
     }
 
     @Override
@@ -107,13 +107,13 @@ public class UserService extends ClientSearchDatabaseService<User, UserDAO> impl
         }
         String sqlFilterString = ServiceManager.getFilterService().mapToSQLFilterString(filterMap.keySet());
         if (ServiceManager.getSecurityAccessService().hasAuthorityGlobalToViewUserList()) {
-            return countDatabaseRows("SELECT COUNT(*) FROM User WHERE deleted = 0" + sqlFilterString, filterMap);
+            return countDatabaseRows("SELECT COUNT(*) FROM User WHERE deleted = false" + sqlFilterString, filterMap);
         }
 
         if (ServiceManager.getSecurityAccessService().hasAuthorityToViewUserList()) {
             filterMap.put(CLIENT_ID, getSessionClientId());
             return countDatabaseRows(
-                "SELECT COUNT(*) FROM User u INNER JOIN u.clients AS c WITH c.id = :clientId WHERE deleted = 0"
+                "SELECT COUNT(*) FROM User u INNER JOIN u.clients AS c WITH c.id = :clientId WHERE deleted = false"
                         + sqlFilterString, filterMap);
         }
         return 0L;
@@ -122,7 +122,7 @@ public class UserService extends ClientSearchDatabaseService<User, UserDAO> impl
     @Override
     public List<User> getAllForSelectedClient() {
         return getByQuery(
-            "SELECT u FROM User AS u INNER JOIN u.clients AS c WITH c.id = :clientId WHERE deleted = 0",
+            "SELECT u FROM User AS u INNER JOIN u.clients AS c WITH c.id = :clientId WHERE deleted = false",
             Collections.singletonMap(CLIENT_ID, getSessionClientId()));
     }
 
@@ -141,13 +141,13 @@ public class UserService extends ClientSearchDatabaseService<User, UserDAO> impl
         }
         String sqlFilterString = ServiceManager.getFilterService().mapToSQLFilterString(filterMap.keySet());
         if (ServiceManager.getSecurityAccessService().hasAuthorityGlobalToViewUserList()) {
-            return dao.getByQuery("FROM User WHERE deleted = 0" + sqlFilterString + getSort(sortField, sortOrder),
+            return dao.getByQuery("FROM User WHERE deleted = false" + sqlFilterString + getSort(sortField, sortOrder),
                     filterMap, first, pageSize);
         }
         if (ServiceManager.getSecurityAccessService().hasAuthorityToViewUserList()) {
             filterMap.put(CLIENT_ID, getSessionClientId());
             return dao.getByQuery(
-                "SELECT u FROM User AS u INNER JOIN u.clients AS c WITH c.id = :clientId WHERE deleted = 0"
+                "SELECT u FROM User AS u INNER JOIN u.clients AS c WITH c.id = :clientId WHERE deleted = false"
                         + sqlFilterString + getSort(sortField, sortOrder),
                 filterMap, first, pageSize);
         }

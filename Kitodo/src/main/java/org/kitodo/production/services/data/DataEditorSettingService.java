@@ -109,14 +109,14 @@ public class DataEditorSettingService extends SearchDatabaseService<DataEditorSe
     public List<DataEditorSetting> getByTaskId(int taskId) {
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("taskId", taskId);
-        return getByQuery("FROM DataEditorSetting WHERE task_id = :taskId ORDER BY id ASC", parameterMap);
+        return getByQuery("FROM DataEditorSetting WHERE task.id = :taskId ORDER BY id ASC", parameterMap);
     }
     
     private List<DataEditorSetting> getByUserAndTask(int userId, int taskId) {
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("userId", userId);
         parameterMap.put("taskId", taskId);
-        return getByQuery("FROM DataEditorSetting WHERE user_id = :userId AND task_id = :taskId ORDER BY id ASC", parameterMap);
+        return getByQuery("FROM DataEditorSetting WHERE user.id = :userId AND task.id = :taskId ORDER BY id ASC", parameterMap);
     }
 
     /**

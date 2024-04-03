@@ -17,9 +17,10 @@ import java.io.StringWriter;
 import java.net.URI;
 import java.util.Objects;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Marshaller;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 
 import org.kitodo.dataformat.metskitodo.Mets;
@@ -66,14 +67,12 @@ public class MetsKitodoWriter {
      */
     public String writeSerializedToString(Mets mets) throws JAXBException {
         jaxbMetsMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-        jaxbMetsMarshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new MetsKitodoNamespacePrefixMapper());
         StringWriter stringWriter = new StringWriter();
         jaxbMetsMarshaller.marshal(mets, stringWriter);
         return stringWriter.toString();
     }
 
     private void writeMetsData(Mets mets, URI file) throws JAXBException {
-        jaxbMetsMarshaller.setProperty("com.sun.xml.bind.namespacePrefixMapper", new MetsKitodoNamespacePrefixMapper());
         jaxbMetsMarshaller.marshal(mets, new File(file));
     }
 

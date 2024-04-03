@@ -9,22 +9,22 @@
   * GPL3-License.txt file that was distributed with this source code.
   -->
 
-<jxb:bindings xmlns="http://java.sun.com/xml/ns/jaxb"
+<jxb:bindings version="3.0"
+              xmlns:jxb="https://jakarta.ee/xml/ns/jaxb"
               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-              xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
-              xmlns:namespace="http://jaxb2-commons.dev.java.net/namespace-prefix"
-              version="2.1">
-    <bindings schemaLocation="../../../../target/downloaded-sources/xsd/mets.xsd">
-        <schemaBindings>
-            <package name="org.kitodo.dataformat.metskitodo"/>
-        </schemaBindings>
-        <bindings node="//xsd:complexType[@name='divType']">
-            <bindings node="//xsd:attribute[@ref='xlink:label']">
-                <property name="xlinkLabel"/>
-            </bindings>
-        </bindings>
-        <bindings>
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xmlns:namespace="urn:jaxb.jvnet.org:plugin:namespace-prefix">
+    <jxb:bindings schemaLocation="../../../../target/downloaded-sources/xsd/mets.xsd">
+        <jxb:schemaBindings>
+            <jxb:package name="org.kitodo.dataformat.metskitodo"/>
+        </jxb:schemaBindings>
+        <jxb:bindings node="//xsd:complexType[@name='divType']">
+            <jxb:bindings node="//xsd:attribute[@ref='xlink:label']">
+                <jxb:property name="xlinkLabel"/>
+            </jxb:bindings>
+        </jxb:bindings>
+        <jxb:bindings>
             <namespace:prefix name="mets"/>
-        </bindings>
-    </bindings>
+        </jxb:bindings>
+    </jxb:bindings>
 </jxb:bindings>

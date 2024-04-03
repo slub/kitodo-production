@@ -14,7 +14,8 @@ package org.kitodo.dataeditor;
 import java.io.IOException;
 import java.net.URI;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
+
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.transform.TransformerException;
 

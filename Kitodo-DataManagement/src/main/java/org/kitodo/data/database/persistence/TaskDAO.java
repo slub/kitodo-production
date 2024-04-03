@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.persistence.PersistenceException;
+import jakarta.persistence.PersistenceException;
 
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
@@ -81,7 +81,7 @@ public class TaskDAO extends BaseDAO<Task> {
         parameters.put("title", title);
         parameters.put("batchId", batchId);
         return getByQuery("SELECT t FROM Task AS t INNER JOIN t.process AS p INNER JOIN p.batches AS b WHERE t.title = "
-                + ":title AND batchStep = 1 AND b.id = :batchId",
+                + ":title AND batchStep = true AND b.id = :batchId",
             parameters);
     }
 
@@ -101,7 +101,7 @@ public class TaskDAO extends BaseDAO<Task> {
         parameters.put("orderingMax", orderingMax);
         parameters.put("orderingMin", orderingMin);
         parameters.put(KEY_PROCESS_ID, processId);
-        return getByQuery("FROM Task WHERE process_id = :processId AND ordering < :orderingMin"
+        return getByQuery("FROM Task WHERE process.id = :processId AND ordering < :orderingMin"
                 + " AND ordering > :orderingMax ORDER BY ordering ASC",
             parameters);
     }
@@ -119,7 +119,7 @@ public class TaskDAO extends BaseDAO<Task> {
         Map<String, Object> parameters = new HashMap<>();
         parameters.put("ordering", ordering);
         parameters.put(KEY_PROCESS_ID, processId);
-        return getByQuery("FROM Task WHERE process_id = :processId AND ordering > :ordering AND repeatOnCorrection = 1",
+        return getByQuery("FROM Task WHERE process.id = :processId AND ordering > :ordering AND repeatOnCorrection = true",
             parameters);
     }
 
@@ -137,7 +137,7 @@ public class TaskDAO extends BaseDAO<Task> {
         parameters.put("ordering", ordering);
         parameters.put(KEY_PROCESS_ID, processId);
         return getByQuery(
-            "FROM Task WHERE process_id = :processId AND ordering < :ordering" + " ORDER BY ordering DESC", parameters);
+            "FROM Task WHERE process.id = :processId AND ordering < :ordering" + " ORDER BY ordering DESC", parameters);
     }
 
     /**
@@ -168,7 +168,7 @@ public class TaskDAO extends BaseDAO<Task> {
         try (Session session = HibernateUtil.getSession()) {
             // do not use hibernate query language, which does not support recursive queries, use native SQL instead
             // do not use query parameter with recursive query, which works with MySQL and MariaDB but not h2 database
-            NativeQuery<Object[]> query = session.createSQLQuery(
+            NativeQuery<Object[]> query = session.createNativeQuery(
                 "SELECT t.processingStatus as status, COUNT(*) as count FROM task t, ("
                     + "    WITH RECURSIVE process_children(id) as ("
                     + "        (SELECT id FROM process WHERE id = " + process.getId() + ")"

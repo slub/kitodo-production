@@ -51,7 +51,7 @@ public class ProjectType extends BaseType<Project> {
         try {
             ProjectDAO projectDAO = new ProjectDAO();
             processCount = projectDAO.count(
-                "SELECT COUNT(*) FROM Process WHERE project_id = :id", 
+                "SELECT COUNT(*) FROM Process WHERE project.id = :id",
                 Collections.singletonMap("id", project.getId())
             );
         } catch (DAOException e) {

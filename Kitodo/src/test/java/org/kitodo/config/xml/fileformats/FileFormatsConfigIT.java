@@ -17,7 +17,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Locale;
 import java.util.Locale.LanguageRange;
 
-import javax.xml.bind.JAXBException;
+import jakarta.xml.bind.JAXBException;
 
 import org.junit.Test;
 import org.kitodo.api.imagemanagement.ImageFileFormat;

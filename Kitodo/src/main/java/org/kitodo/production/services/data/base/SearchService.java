@@ -26,7 +26,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.json.JsonObject;
+import jakarta.json.JsonObject;
+
 import javax.ws.rs.HttpMethod;
 
 import org.apache.logging.log4j.LogManager;
