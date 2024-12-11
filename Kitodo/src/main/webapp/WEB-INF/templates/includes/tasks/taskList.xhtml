@@ -30,7 +30,7 @@
                      paginator="true"
                      resizableColumns="true"
                      liveResize="true"
-                     sortBy="#{item.title.keyword}"
+                     sortBy="#{item.processForTask.title.keyword}"
                      rows="#{LoginForm.loggedUser.tableSize}"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {JumpToPageInput} {NextPageLink} {LastPageLink}"
                      currentPageReportTemplate="#{msgs.currentPageReportTemplate}"
@@ -46,12 +46,16 @@
                 <p:rowToggler/>
             </p:column>
 
-            <p:column id="titleColumn"
-                      headerText="#{msgs.title}"
-                      sortBy="#{item.title.keyword}"
-                      rendered="#{CurrentTaskForm.showColumn('task.title')}">
-                <h:outputText title="#{item.title}"
-                              value="#{item.title}"/>
+            <p:column headerText="#{msgs.process}"
+                      sortBy="#{item.processForTask.title.keyword}"
+                      rendered="#{CurrentTaskForm.showColumn('task.process')}">
+                <h:link id="editProcess" outcome="/pages/processEdit" title="#{msgs.editProcess}"
+                        rendered="#{SecurityAccessController.hasAuthorityToEditProcess()}">
+                    <i class="fa fa-pencil-square-o fa-lg"/>
+                    <f:param name="id" value="#{item.process.id}"/>
+                </h:link>
+                <h:outputText title="#{item.process.title}"
+                              value=" #{item.process.title}"/>
             </p:column>
 
             <p:column id="processIdColumn"
@@ -63,16 +67,12 @@
                               value="#{item.process.id}"/>
             </p:column>
 
-            <p:column headerText="#{msgs.process}"
-                      sortBy="#{item.processForTask.title.keyword}"
-                      rendered="#{CurrentTaskForm.showColumn('task.process')}">
-                <h:link id="editProcess" outcome="/pages/processEdit" title="#{msgs.editProcess}"
-                        rendered="#{SecurityAccessController.hasAuthorityToEditProcess()}">
-                    <i class="fa fa-pencil-square-o fa-lg"/>
-                    <f:param name="id" value="#{item.process.id}"/>
-                </h:link>
-                <h:outputText title="#{item.process.title}"
-                              value=" #{item.process.title}"/>
+            <p:column id="titleColumn"
+                      headerText="#{msgs.title}"
+                      sortBy="#{item.title.keyword}"
+                      rendered="#{CurrentTaskForm.showColumn('task.title')}">
+                <h:outputText title="#{item.title}"
+                              value="#{item.title}"/>
             </p:column>
 
             <p:column headerText="#{msgs.status}"
@@ -87,6 +87,13 @@
                                 #{item.processingStatus.title == 'statusOpen' ? 'var(--light-orange)' : ''}
                                 #{item.processingStatus.title == 'statusLocked' ? 'var(--orange)' : ''};"
                 />
+            </p:column>
+
+            <p:column headerText="#{msgs.project}"
+                      sortBy="#{item.projectForTask.title.keyword}"
+                      rendered="#{CurrentTaskForm.showColumn('task.project')}">
+                <h:outputText title="#{item.process.project.title}"
+                              value="#{item.process.project.title}"/>
             </p:column>
 
             <p:column id="processingUserColumn"
@@ -143,13 +150,6 @@
                               value="#{CurrentTaskForm.getTaskProcessPropertyValue(item, fn:replace(taskColumn, 'task.', ''))}"/>
             </p:columns>
 
-            <p:column headerText="#{msgs.project}"
-                      sortBy="#{item.projectForTask.title.keyword}"
-                      rendered="#{CurrentTaskForm.showColumn('task.project')}">
-                <h:outputText title="#{item.process.project.title}"
-                              value="#{item.process.project.title}"/>
-            </p:column>
-
             <p:column headerText="#{msgs.duration} (#{msgs.process})"
                       styleClass="numeric"
                       sortBy="#{item.process.creationDate}"
@@ -178,7 +178,7 @@
                                    action="#{CurrentTaskForm.downloadToHome(item.process.id)}"
                                    styleClass="action"
                                    title="#{msgs.linkHomeDirectory}"
-                                   rendered="#{SecurityAccessController.hasAuthorityToEditProcessImages()}">
+                                   rendered="false"> <!-- was rendered="#{SecurityAccessController.hasAuthorityToEditProcessImages()}" -->
                         <h:outputText><i class="fa fa-download"/></h:outputText>
                     </p:commandLink>
 
