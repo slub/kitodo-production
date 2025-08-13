@@ -181,12 +181,14 @@
                     <p:ajax oncomplete="toggleSave()" update="editForm:userTabView:writeUserToLdapButton"/>
                 </p:selectOneMenu>
             </div>
+<!--
             <div>
                 <p:outputLabel for="withMassDownload" value="#{msgs.massDownload}"/>
                 <p:selectBooleanCheckbox id="withMassDownload" styleClass="switch input" disabled="#{isViewMode}"
                                          value="#{UserForm.userObject.withMassDownload}"
                                          onchange="toggleSave()"/>
             </div>
+-->
             <div>
                 <!-- show process data in my tasks -->
                 <p:outputLabel for="show-process-data" value="#{msgs.showProcessInTaskList}" />
